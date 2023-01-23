@@ -299,6 +299,10 @@ def run(
 
     for source_file in files_to_compare:
         # Check for similarities
+        if source_file not in source_code:
+            # the file we want to compare is not the source we specified 
+            # e.g. the directories
+            continue
         query_doc = [w.lower() for w in word_tokenize(source_code[source_file])]
         query_doc_bow = dictionary.doc2bow(query_doc)
         query_doc_tf_idf = tf_idf[query_doc_bow]
