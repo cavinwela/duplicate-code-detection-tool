@@ -110,14 +110,13 @@ def main():
         default=100,
         help="The maximum allowed similarity before the script exits with an error.",
     )
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument(
+    parser.add_argument(
         "-d",
         "--directories",
         nargs="+",
         help="Check for similarities between all files of the specified directories.",
     )
-    group.add_argument(
+    parser.add_argument(
         "-f",
         "--files",
         nargs="+",
@@ -181,8 +180,8 @@ def main():
 
 def run(
     fail_threshold,
-    directories,
-    files,
+    source_directory,
+    files_to_compare,
     ignore_directories,
     ignore_files,
     json_output,
@@ -195,8 +194,9 @@ def run(
     # Determine which files to compare for similarities
     source_code_files = list()
     files_to_ignore = list()
-    if directories:
-        for directory in directories:
+    files_to_compare = files_to_compare or source_code_files
+    if source_directory:
+        for directory in source_directory:
             if not os.path.isdir(directory):
                 print("Path does not exist or is not a directory:", directory)
                 return (ReturnCode.BAD_INPUT, {})
@@ -207,15 +207,6 @@ def run(
             files_to_ignore += get_all_source_code_from_directory(
                 directory, file_extensions
             )
-    else:
-        if len(files) < 2:
-            print("Too few files to compare, you need to supply at least 2")
-            return (ReturnCode.BAD_INPUT, {})
-        for supplied_file in files:
-            if not os.path.isfile(supplied_file):
-                print("Supplied file does not exist:", supplied_file)
-                return (ReturnCode.BAD_INPUT, {})
-        source_code_files = files
 
     files_to_ignore += ignore_files if ignore_files else list()
     source_code_files = list(set(source_code_files) - set(files_to_ignore))
@@ -223,6 +214,7 @@ def run(
         print("Not enough source code files found")
         return (ReturnCode.BAD_INPUT, {})
     source_code_files = [os.path.abspath(f) for f in source_code_files]
+    files_to_compare = [os.path.abspath(f) for f in files_to_compare]
 
     # Get the absolute project root directory path to remove when printing out the results
     if project_root_dir:
@@ -268,7 +260,7 @@ def run(
 
     exit_code = ReturnCode.SUCCESS
     code_similarity = dict()
-    for source_file in source_code:
+    for source_file in files_to_compare:
         # Check for similarities
         query_doc = [w.lower() for w in word_tokenize(source_code[source_file])]
         query_doc_bow = dictionary.doc2bow(query_doc)
