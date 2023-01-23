@@ -121,7 +121,7 @@ def main():
     file_extensions = os.environ.get("INPUT_FILE_EXTENSIONS")
     ignore_threshold = os.environ.get("INPUT_IGNORE_BELOW")
     only_code = os.environ.get("INPUT_ONLY_CODE")
-    files_list = os.environ.get("INPUT_FILES_LIST")
+    files_list = os.environ.get("INPUT_FILES_LIST") or ""
 
     directories_list = split_and_trim(directories)
     directories_list = to_absolute_path(directories_list)
@@ -139,7 +139,7 @@ def main():
     detection_result, code_similarity = duplicate_code_detection.run(
         int(fail_threshold),
         directories_list,
-        files_list,
+        files_list.split(" "),
         ignore_directories_list,
         ignore_files_list,
         json_output,
