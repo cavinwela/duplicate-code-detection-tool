@@ -219,7 +219,6 @@ def run(
     # Determine which files to compare for similarities
     source_code_files = list()
     files_to_ignore = list()
-    files_to_compare = files_to_compare or source_code_files
     if source_directory:
         for directory in source_directory:
             if not os.path.isdir(directory):
@@ -233,6 +232,7 @@ def run(
                 directory, file_extensions
             )
 
+    files_to_compare = files_to_compare or source_code_files
     files_to_ignore += ignore_files if ignore_files else list()
     files_to_ignore = [os.path.normpath(f) for f in files_to_ignore]
     source_code_files = [os.path.normpath(f) for f in source_code_files]
@@ -294,6 +294,9 @@ def run(
 
     exit_code = ReturnCode.SUCCESS
     code_similarity = dict()
+    print(files_to_compare)
+    print(source_code.keys())
+
     for source_file in files_to_compare:
         # Check for similarities
         query_doc = [w.lower() for w in word_tokenize(source_code[source_file])]
