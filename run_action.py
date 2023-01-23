@@ -121,6 +121,7 @@ def main():
     file_extensions = os.environ.get("INPUT_FILE_EXTENSIONS")
     ignore_threshold = os.environ.get("INPUT_IGNORE_BELOW")
     only_code = os.environ.get("INPUT_ONLY_CODE")
+    files_list = os.environ.get("INPUT_FILES_LIST")
 
     directories_list = split_and_trim(directories)
     directories_list = to_absolute_path(directories_list)
@@ -131,7 +132,6 @@ def main():
     file_extensions_list = split_and_trim(file_extensions)
     project_root_dir = os.path.abspath(project_root_dir)
 
-    files_list = None
     ignore_files_list = None
     json_output = True
     csv_output_path = ""  # No CSV output by default for now in GitHub Actions

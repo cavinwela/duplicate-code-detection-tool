@@ -7,6 +7,9 @@ inputs:
   directories:
     description: 'A comma-separated list of the directories containing the source code'
     required: true
+  files_list:
+    description: 'A comma-separated list of files to check'
+    required: false
   ignore_directories:
     description: 'A comma-separated list of directories that should be ignored'
     required: false
