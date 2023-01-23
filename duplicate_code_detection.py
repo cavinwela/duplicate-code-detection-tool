@@ -294,8 +294,6 @@ def run(
 
     exit_code = ReturnCode.SUCCESS
     code_similarity = dict()
-    print(files_to_compare)
-    print(source_code.keys())
 
     for source_file in files_to_compare:
         # Check for similarities
