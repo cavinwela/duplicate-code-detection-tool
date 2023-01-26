@@ -89,35 +89,38 @@ jobs:
           directories: "src/, test/ut"
 ```
 
-### Trigger on pull request comment
+### Trigger on pull request with only changed files 
 
-If you want to avoid the "spam" you should configure the tool to not always run. Specifically, if you
-wish to trigger the Action manually, you can do so by leaving a comment in the pull request.
+If you want to avoid the "spam" you should configure the tool to only check the changed files 
 
-The following action will trigger the tool to be run when a comment containig `run_duplicate_code_detection_tool`
-is posted in a pull request. The tool will run using the code in the pull request.
+The following action will trigger the tool to be run only on the changed files of a pull request.
 
 ```yaml
-name: Duplicate code
+name: Lint
 
-on: issue_comment
+on: pull_request
 
 jobs:
   duplicate-code-check:
     name: Check for duplicate code
-    # Trigger the tool only when a comment containing the keyword is published in a pull request
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'run_duplicate_code_detection_tool')
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+
       - name: Check for duplicate code
-        uses: platisd/duplicate-code-detection-tool@master
+        uses: icerepository/duplicate-code-detection-tool@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          directories: "."
+          directories: "reports/, etl/"
+          files_list: ${{ steps.changed-files.outputs.all_changed_files }}
+          file_extensions: "sql, py"
 ```
-
-**Important:** Please note that due to the way GitHub Actions work, you will *first* have to merge this into your main
-branch so it starts taking effect.
 
 ### Optional configuration
 
