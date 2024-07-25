@@ -159,7 +159,20 @@ jobs:
           # Remove docstrings from code before analysis
           # For python source code only. This is checked on a per-file basis
           only_code: true
+          # Leave only one comment with the report and update it for consecutive runs
+          one_comment: true
+          # The message to be displayed at the start of the report
+          header_message_start: "The following files have a similarity above the threshold:"
 ```
+## Using duplicate-code-check with pre-commit
+To use Duplicate Code Detection Tool as a pre-commit hook with [pre-commit](https://pre-commit.com/) add the following to your `.pre-commit-config.yaml` file:
+```yaml
+-   repo: https://github.com/platisd/duplicate-code-detection-tool.git
+    rev: ''  # Use the sha / tag you want to point at
+    hooks:
+    -   id: duplicate-code-detection
+```
+> **_NOTE:_** that this repository sets args: `-f`, if you are configuring duplicate-code-detection-tool using args you'll want to include either `-f` (`--files`) or `-d` (`--directories`).
 
 ## Limitations
 
