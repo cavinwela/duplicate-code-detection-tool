@@ -165,7 +165,7 @@ def main():
     warn_threshold = os.environ.get("INPUT_WARN_ABOVE")
 
     message = "## 📌 Duplicate code detection tool report\n"
-    message += "The [tool](https://github.com/icerepository/duplicate-code-detection-tool)"
+    message += "The [tool](https://github.com/cavinwela/duplicate-code-detection-tool)"
     message += " analyzed your source code and found the following degree of"
     message += " similarity between the files:\n"
     message += similarities_to_markdown(
