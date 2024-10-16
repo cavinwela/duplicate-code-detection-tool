@@ -164,7 +164,8 @@ def main():
     files_url_prefix = "https://github.com/%s/blob/%s/" % (repo, args.latest_head)
     warn_threshold = os.environ.get("INPUT_WARN_ABOVE")
 
-    message = "## 📌 Duplicate code detection tool report\n"
+    header_message_start = os.environ.get("INPUT_HEADER_MESSAGE_START") + "\n"
+    message = header_message_start
     message += "The [tool](https://github.com/cavinwela/duplicate-code-detection-tool)"
     message += " analyzed your source code and found the following degree of"
     message += " similarity between the files:\n"
