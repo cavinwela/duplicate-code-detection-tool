@@ -237,6 +237,8 @@ def run(
     # if there are no files to compare from PR, return Success
     if not len(files_to_compare):
         return (ReturnCode.SUCCESS, dict())
+
+    print(f"Files to check: {files_to_compare}")
         
     files_to_ignore += ignore_files if ignore_files else list()
     files_to_ignore = [os.path.normpath(f) for f in files_to_ignore]
