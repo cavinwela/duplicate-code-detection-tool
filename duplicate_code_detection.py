@@ -233,6 +233,11 @@ def run(
             )
 
     files_to_compare = files_to_compare or source_code_files
+
+    # if there are no files to compare from PR, return Success
+    if not len(files_to_compare):
+        return (ReturnCode.SUCCESS, dict())
+        
     files_to_ignore += ignore_files if ignore_files else list()
     files_to_ignore = [os.path.normpath(f) for f in files_to_ignore]
     source_code_files = [os.path.normpath(f) for f in source_code_files]
