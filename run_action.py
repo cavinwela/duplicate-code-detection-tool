@@ -159,6 +159,8 @@ def main():
         print(
             "Action failed due to maximum similarity threshold exceeded, check the report"
         )
+    elif not code_similarity:
+        return detection_result.value
 
     repo = os.environ.get("GITHUB_REPOSITORY")
     files_url_prefix = "https://github.com/%s/blob/%s/" % (repo, args.latest_head)
